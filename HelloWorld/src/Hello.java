@@ -8,7 +8,7 @@ public class Hello {
 		queue.add(2);
 		queue.add(3);
 		queue.add(4);
-		
+		   
 		int level = 1;
 		while (!queue.isEmpty()){
 			System.out.println("level = " + level);
