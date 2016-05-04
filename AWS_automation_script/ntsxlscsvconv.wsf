@@ -1,0 +1,52 @@
+<job id="main">
+	<script language="VBScript">
+        Const ForReading = 1
+        Const ForWriting = 2
+		Dim objXL
+        Dim objWorkBook, local
+        Dim strPath
+        Set objXL = CreateObject("Excel.Application")
+        strPathDivest     = "C:\Business_Panorama\nts\data\out"
+        strPathProduct    = "C:\Business_Panorama\nts\data\out"
+        strPathGeost      = "C:\Business_Panorama\nts\data\out"
+        strPathGehir      = "C:\Business_Panorama\nts\data\out"
+        strPathMegabrand  = "C:\Business_Panorama\nts\data\out"
+		strPathFact       = "C:\Business_Panorama\nts\data\out"
+       
+       
+        Dim WorkSheet
+		sFolder           = "C:\Business_Panorama\nts\data\in"
+       
+        Set oFSO = CreateObject("Scripting.FileSystemObject")
+
+        For Each oFile In oFSO.GetFolder(sFolder).Files
+            If UCase(oFSO.GetExtensionName(oFile.Name)) = "XLSX" Then
+                Set objWorkBook = objXL.Workbooks.Open(sFolder & "\" & oFile.Name)
+                For Each WorkSheet In objWorkBook.Sheets 
+                    If objXL.Application.WorksheetFunction.CountA(WorkSheet.Cells) <> 0 Then
+                        If WorkSheet.Name = "raw data" then
+                            WorkSheet.SaveAs strPathFact & "\" & Year(Date) & Right("0" & Month(Date),2) & Right("0" & Day(Date),2) & "_" & "nts" & "_" & WorkSheet.Name & ".csv" , 6
+                        Elseif WorkSheet.Name = "product hierarchy" then
+                            WorkSheet.SaveAs strPathProduct &  "\" & Year(Date) & Right("0" & Month(Date),2) & Right("0" & Day(Date),2) & "_" & "nts" & "_" & WorkSheet.Name & ".csv" , 6
+                        Elseif WorkSheet.Name = "megabrands" then
+                            WorkSheet.SaveAs strPathMegabrand & "\" & Year(Date) & Right("0" & Month(Date),2) & Right("0" & Day(Date),2) & "_" & "nts" & "_" & WorkSheet.Name & ".csv" , 6
+                        Elseif WorkSheet.Name = "geo hierarchy" then
+                            WorkSheet.SaveAs strPathGehir & "\" & Year(Date) & Right("0" & Month(Date),2) & Right("0" & Day(Date),2) & "_" & "nts" & "_" & WorkSheet.Name & ".csv" , 6
+                        Elseif WorkSheet.Name = "geo strategy" then
+                            WorkSheet.SaveAs strPathGeost & "\" & Year(Date) & Right("0" & Month(Date),2) & Right("0" & Day(Date),2) & "_" & "nts" & "_" & WorkSheet.Name & ".csv" , 6
+                        Elseif WorkSheet.Name = "Divestitures" then
+                                WorkSheet.SaveAs strPathDivest & "\" & Year(Date) & Right("0" & Month(Date),2) & Right("0" & Day(Date),2) & "_" & "nts" & "_" & WorkSheet.Name & ".csv" , 6
+                        End If
+                    End If
+                Next
+            End if
+            objWorkBook.Close false
+        Next
+
+        rem clean up 
+        objXL.quit
+        Set objXL = Nothing
+        Set objWorkBook = Nothing
+        Set oFSO = Nothing
+	</script>
+</job>
