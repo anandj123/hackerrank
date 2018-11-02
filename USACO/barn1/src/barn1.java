@@ -1,4 +1,4 @@
-/*
+package USACO.barn1.src;/*
 ID: jain.121
 LANG: JAVA
 TASK: barn1
